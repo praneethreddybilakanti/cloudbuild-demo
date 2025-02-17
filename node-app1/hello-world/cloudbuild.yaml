@@ -16,7 +16,7 @@ steps:
       - '--zone=us-central1-a'
       - '--command'
       - |
-        "sudo docker pull gcr.io/$PROJECT_ID/docker-gce-app:latest && sudo docker run -d -p 80:8080 gcr.io/$PROJECT_ID/docker-gce-app:latest"
+        " docker pull gcr.io/$PROJECT_ID/docker-gce-app:latest &&  docker run -d -p 80:8080 gcr.io/$PROJECT_ID/docker-gce-app:latest"
 
 options:
   logging: GCS_ONLY  # Only send logs to Cloud Logging
