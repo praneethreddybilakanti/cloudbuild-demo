@@ -1,7 +1,7 @@
 steps:
-  # Step 1: Build the Docker image
+  # Step 1: Build the Docker image from the correct directory
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'gcr.io/$PROJECT_ID/docker-gce-app', '.']
+    args: ['build', '-t', 'gcr.io/$PROJECT_ID/docker-gce-app', 'node-app1/hello-world']
 
   # Step 2: Push the Docker image to Google Container Registry (GCR)
   - name: 'gcr.io/cloud-builders/docker'
@@ -13,11 +13,15 @@ steps:
       - 'compute'
       - 'ssh'
       - 'gce-instance-name'
-      - '--zone=us-central1-a'  # Specify your instance's zone here
-      - '--command=sudo docker pull gcr.io/$PROJECT_ID/docker-gce-app && sudo docker run -d -p 80:8080 gcr.io/$PROJECT_ID/docker-gce-app'
+      - '--zone=us-central1-a'
+      - '--command'
+      - |
+        "sudo docker pull gcr.io/$PROJECT_ID/docker-gce-app && sudo docker run -d -p 80:8080 gcr.io/$PROJECT_ID/docker-gce-app"
+
 options:
   logging: GCS_ONLY  # Only send logs to Cloud Logging
 
-logsBucket: "gs://praneeth-cloud-build-logs"  # Replace with your actual bucket
+logsBucket: "gs://praneeth-cloud-build-logs"  # Ensure this bucket exists and is accessible
+
 images:
   - 'gcr.io/$PROJECT_ID/docker-gce-app'
